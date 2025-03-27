@@ -1,8 +1,8 @@
 package com.example.LibraryManagement.Controllers;
 
 import com.example.LibraryManagement.Services.LoanService;
-import com.example.LibraryManagement.Tables.Loan;
-import com.example.LibraryManagement.Tables.User;
+import com.example.LibraryManagement.Entities.Loan;
+import com.example.LibraryManagement.Entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

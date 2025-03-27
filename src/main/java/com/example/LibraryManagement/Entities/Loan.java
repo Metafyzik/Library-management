@@ -1,4 +1,4 @@
-package com.example.LibraryManagement.Tables;
+package com.example.LibraryManagement.Entities;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,8 +1,7 @@
 package com.example.LibraryManagement.Controllers;
 
 import com.example.LibraryManagement.Services.BookService;
-import com.example.LibraryManagement.Tables.Book;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.LibraryManagement.Entities.Book;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 

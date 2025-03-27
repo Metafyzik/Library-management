@@ -2,9 +2,9 @@ package com.example.LibraryManagement.Services;
 
 import com.example.LibraryManagement.Repositories.BookRepository;
 import com.example.LibraryManagement.Repositories.LoanRepository;
-import com.example.LibraryManagement.Tables.Book;
-import com.example.LibraryManagement.Tables.Loan;
-import com.example.LibraryManagement.Tables.User;
+import com.example.LibraryManagement.Entities.Book;
+import com.example.LibraryManagement.Entities.Loan;
+import com.example.LibraryManagement.Entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;

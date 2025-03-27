@@ -1,6 +1,6 @@
 package com.example.LibraryManagement.Repositories;
 
-import com.example.LibraryManagement.Tables.Loan;
+import com.example.LibraryManagement.Entities.Loan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
