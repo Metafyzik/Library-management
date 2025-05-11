@@ -9,6 +9,7 @@ import com.example.LibraryManagement.Config.JwtUtil;
 import com.example.LibraryManagement.Entities.User;
 import com.example.LibraryManagement.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +25,7 @@ public class AuthController {
         this.userService = userService;
     }
     @PostMapping("/register")
-    public String register(@RequestBody AuthRequest request) {
+    public ResponseEntity<?> register(@RequestBody AuthRequest request) {
         return userService.register(request);
     }
     @PostMapping("/login")

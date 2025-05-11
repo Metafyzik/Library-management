@@ -6,6 +6,8 @@ import com.example.LibraryManagement.DTO.AuthResponse;
 import com.example.LibraryManagement.Entities.User;
 import com.example.LibraryManagement.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 @Service
@@ -30,9 +33,9 @@ public class UserService {
         this.userDetailsService = userDetailsService;
     }
 
-    public String register(@RequestBody AuthRequest request) {
+    public ResponseEntity<?> register(@RequestBody AuthRequest request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-            return "Username already taken.";
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username is already taken");
         }
         //todo throw some sort of error if user name is taken
 
@@ -41,7 +44,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRoles(Set.of(Role.MEMBER)); // Default role
         userRepository.save(user);
-        return "User registered successfully.";
+        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully.");
     }
 
     @PostMapping("/login")

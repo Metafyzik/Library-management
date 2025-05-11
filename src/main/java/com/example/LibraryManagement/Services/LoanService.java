@@ -6,7 +6,10 @@ import com.example.LibraryManagement.Entities.Book;
 import com.example.LibraryManagement.Entities.Loan;
 import com.example.LibraryManagement.Entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,11 +24,13 @@ public class LoanService {
         this.bookRepository = bookRepository;
     }
 
-    //TODO make special exceptions for not existing loan and book
     public Loan borrowBook(Long bookId, User user) {
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
+
         if (!book.isAvailable()) {
-            throw new RuntimeException("Book is already borrowed");
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT, "Book with ID " + bookId + " is already borrowed"
+            );
         }
 
         book.setAvailable(false);
