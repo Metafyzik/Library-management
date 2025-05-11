@@ -7,8 +7,6 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-@Service
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
     public CustomUserDetailsService(UserRepository userRepository) {

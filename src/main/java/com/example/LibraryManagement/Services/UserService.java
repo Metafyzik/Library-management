@@ -19,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.Set;
-@Service
 public class UserService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;

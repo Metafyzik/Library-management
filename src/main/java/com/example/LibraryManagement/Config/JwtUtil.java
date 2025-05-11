@@ -12,11 +12,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-@Component
-@EnableWebSecurity
 public class JwtUtil {
-    @Value("${jwtKey}")
-    private String SECRET_KEY;
+    private final String SECRET_KEY;
+
+    public JwtUtil(String secretKey) {
+        this.SECRET_KEY = secretKey;
+    }
     private SecretKey getSignKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
     }

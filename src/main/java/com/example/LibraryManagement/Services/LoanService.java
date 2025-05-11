@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.util.List;
 
-@Service
 public class LoanService {
     private static final int DEFAULT_LOAN_DURATION_DAYS = 14;
     private final LoanRepository loanRepository;
