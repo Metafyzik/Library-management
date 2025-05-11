@@ -37,7 +37,6 @@ public class UserService {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username is already taken");
         }
-        //todo throw some sort of error if user name is taken
 
         User user = new User();
         user.setUsername(request.getUsername());
@@ -47,7 +46,6 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully.");
     }
 
-    @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
