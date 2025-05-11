@@ -1,22 +1,17 @@
 package com.example.LibraryManagement.Services;
 
-import com.example.LibraryManagement.Repositories.BookRepository;
 import com.example.LibraryManagement.Entities.Book;
+import com.example.LibraryManagement.Repositories.BookRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 public class BookService {
     private final BookRepository bookRepository;
-
     public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
-
-
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
@@ -29,12 +24,9 @@ public class BookService {
                 ));
     }
 
-
     public Book saveBook(Book book) {
         return bookRepository.save(book);
     }
-
-
 
     public Book addBook(Book book) {
         return bookRepository.save(book);

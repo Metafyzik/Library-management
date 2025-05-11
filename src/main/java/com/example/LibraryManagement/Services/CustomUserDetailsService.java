@@ -3,9 +3,9 @@ package com.example.LibraryManagement.Services;
 import com.example.LibraryManagement.Entities.User;
 import com.example.LibraryManagement.Repositories.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
