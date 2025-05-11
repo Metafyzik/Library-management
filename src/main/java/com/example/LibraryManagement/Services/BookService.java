@@ -2,8 +2,11 @@ package com.example.LibraryManagement.Services;
 
 import com.example.LibraryManagement.Repositories.BookRepository;
 import com.example.LibraryManagement.Entities.Book;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @Service
@@ -20,8 +23,19 @@ public class BookService {
     }
 
     public Book getBookById(Long id) {
-        return bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
+
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Book with ID " + id + " not found"
+                ));
     }
+
+
+    public Book saveBook(Book book) {
+        return bookRepository.save(book);
+    }
+
+
 
     public Book addBook(Book book) {
         return bookRepository.save(book);

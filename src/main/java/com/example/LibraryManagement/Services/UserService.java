@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
 import java.util.Set;
 @Service
 public class UserService {
@@ -57,5 +58,10 @@ public class UserService {
 
         String token = jwtUtil.generateToken(userDetails);
         return new AuthResponse(token);
+    }
+
+    public User findByUsername (String userName){
+        return userRepository.findByUsername(userName).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "User not found with username: " + userName));
     }
 }

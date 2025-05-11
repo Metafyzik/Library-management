@@ -8,6 +8,7 @@ import com.example.LibraryManagement.Entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -15,17 +16,21 @@ import java.util.List;
 
 @Service
 public class LoanService {
-
+    private static final int DEFAULT_LOAN_DURATION_DAYS = 14;
     private final LoanRepository loanRepository;
-    private final BookRepository bookRepository;
+    private final BookService bookService;
 
-    public LoanService(LoanRepository loanRepository, BookRepository bookRepository) {
+    private final UserService userService;
+
+    public LoanService(LoanRepository loanRepository, BookService bookService, UserService userService) {
         this.loanRepository = loanRepository;
-        this.bookRepository = bookRepository;
+        this.bookService = bookService;
+        this.userService = userService;
     }
 
-    public Loan borrowBook(Long bookId, User user) {
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
+    @Transactional
+    public Loan borrowBook(Long bookId, User user) { //TODO user object also contains password, do I need it too?
+        Book book = bookService.getBookById(bookId);
 
         if (!book.isAvailable()) {
             throw new ResponseStatusException(
@@ -33,28 +38,33 @@ public class LoanService {
             );
         }
 
+        User borroweringUser = userService.findByUsername(user.getUsername());
+
         book.setAvailable(false);
-        bookRepository.save(book);
+        bookService.saveBook(book);
 
         Loan loan = new Loan();
         loan.setBook(book);
-        loan.setUser(user);
+        loan.setUser(borroweringUser);
         loan.setLoanDate(LocalDate.now());
-        loan.setDueDate(LocalDate.now().plusDays(14));
+        loan.setDueDate(LocalDate.now().plusDays(DEFAULT_LOAN_DURATION_DAYS));
         loan.setReturned(false);
 
         return loanRepository.save(loan);
     }
 
+    @Transactional
     public void returnBook(Long loanId) {
-        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new RuntimeException("Loan not found"));
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Loan with ID " + loanId + " not found"
+        ));
         loan.setReturned(true);
         loan.getBook().setAvailable(true);
-        bookRepository.save(loan.getBook());
+        bookService.saveBook(loan.getBook());
         loanRepository.save(loan);
     }
 
     public List<Loan> getLoansByUser(Long userId) {
         return loanRepository.findByUserId(userId);
-    }
+    } //TODO check if user exist, if not throw user does not exist error
 }
