@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.function.Function;
 public class JwtUtil {
     private final String SECRET_KEY;
+    private final int TOKEN_DURATION = 1000 * 60 * 60; // 1 hour validity
 
     public JwtUtil(String secretKey) {
         this.SECRET_KEY = secretKey;
@@ -28,7 +29,7 @@ public class JwtUtil {
                 .claims()
                 .add(claims)
                 .subject(userDetails.getUsername())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hour validity
+                .expiration(new Date(System.currentTimeMillis() + TOKEN_DURATION))
                 .and()
                 .signWith(getSignKey())
                 .compact();
