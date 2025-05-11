@@ -17,16 +17,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Set;
 @Service
 public class UserService {
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomUserDetailsService userDetailsService;
+    public UserService(AuthenticationManager authenticationManager, UserRepository userRepository, JwtUtil jwtUtil, PasswordEncoder passwordEncoder, CustomUserDetailsService userDetailsService) {
+        this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
+        this.userDetailsService = userDetailsService;
+    }
 
     public String register(@RequestBody AuthRequest request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {

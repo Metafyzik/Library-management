@@ -19,10 +19,10 @@ import java.util.Set;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    public AuthController( UserService userService) {
+        this.userService = userService;
+    }
     @PostMapping("/register")
     public String register(@RequestBody AuthRequest request) {
         return userService.register(request);

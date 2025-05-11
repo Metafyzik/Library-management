@@ -12,11 +12,14 @@ import java.util.List;
 
 @Service
 public class LoanService {
-    @Autowired
-    private LoanRepository loanRepository;
 
-    @Autowired
-    private BookRepository bookRepository; //TODO change it to constructor injection
+    private final LoanRepository loanRepository;
+    private final BookRepository bookRepository;
+
+    public LoanService(LoanRepository loanRepository, BookRepository bookRepository) {
+        this.loanRepository = loanRepository;
+        this.bookRepository = bookRepository;
+    }
 
     //TODO make special exceptions for not existing loan and book
     public Loan borrowBook(Long bookId, User user) {

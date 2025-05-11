@@ -11,9 +11,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/loans")
 public class LoanController {
-    @Autowired
-    private LoanService loanService;
-
+    private final LoanService loanService;
+    public LoanController(LoanService loanService) {
+        this.loanService = loanService;
+    }
     @PostMapping("/{bookId}/borrow")
     public Loan borrowBook(@PathVariable Long bookId, @RequestBody User user) {
         return loanService.borrowBook(bookId, user);
