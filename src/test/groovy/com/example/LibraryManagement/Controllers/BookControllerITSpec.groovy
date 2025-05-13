@@ -4,17 +4,12 @@ import com.example.LibraryManagement.Entities.Book
 import com.example.LibraryManagement.Services.BookService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Primary
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.web.servlet.MockMvc
-import spock.lang.Specification
-import spock.mock.DetachedMockFactory
 
 import static org.hamcrest.Matchers.hasSize
 import static org.hamcrest.Matchers.is
@@ -22,8 +17,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-
-
 
 @ContextConfiguration(classes = [BookConfig])
 class BookControllerITSpec extends BaseSpec {
