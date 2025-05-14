@@ -38,6 +38,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	//in-memory databases for tests
+	runtimeOnly 'com.h2database:h2'
+
 	// Spock and Groovy
 	testImplementation 'org.codehaus.groovy:groovy-all:3.0.17'
 	testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'

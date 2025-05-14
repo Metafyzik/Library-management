@@ -2,10 +2,12 @@ package com.example.LibraryManagement.Services
 
 import com.example.LibraryManagement.Entities.Book
 import com.example.LibraryManagement.Repositories.BookRepository
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.web.server.ResponseStatusException
 import spock.lang.Specification
 import spock.lang.Subject
 
+@ActiveProfiles("test")
 class BookServiceSpec extends Specification {
 
     BookRepository bookRepository = Mock()
