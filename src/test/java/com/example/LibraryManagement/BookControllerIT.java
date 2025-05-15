@@ -32,9 +32,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-@Import(BookControllerITests.MockedServiceConfig.class)
+@Import(BookControllerIT.MockedServiceConfig.class)
 @ActiveProfiles("test")
-class BookControllerITests {
+class BookControllerIT {
 
     private final MockMvc mockMvc;
     private final BookService bookService;

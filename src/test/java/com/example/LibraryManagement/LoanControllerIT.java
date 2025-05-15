@@ -31,9 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-@Import(LoanControllerITests.MockedServiceConfig.class)
+@Import(LoanControllerIT.MockedServiceConfig.class)
 @ActiveProfiles("test")
-class LoanControllerITests {
+class LoanControllerIT {
 
 
     private final MockMvc mockMvc;
