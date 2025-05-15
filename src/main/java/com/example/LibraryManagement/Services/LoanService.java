@@ -57,5 +57,5 @@ public class LoanService {
 
     public List<Loan> getLoansByUser(Long userId) {
         return loanRepository.findByUserId(userId);
-    } //TODO check if user exist, if not throw user does not exist error
+    }
 }
