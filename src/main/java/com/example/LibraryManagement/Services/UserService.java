@@ -24,14 +24,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final CustomUserDetailsService userDetailsService;
 
-    public ResponseEntity<?> register(@RequestBody AuthRequest request) {
-        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+    public ResponseEntity<String> register(@RequestBody AuthRequest request) {
+        if (userRepository.findByUsername(request.username()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username is already taken");
         }
 
         User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setUsername(request.username());
+        user.setPassword(passwordEncoder.encode(request.password()));
         user.setRoles(Set.of(Role.MEMBER)); // Default role
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully.");
@@ -39,10 +39,10 @@ public class UserService {
 
     public AuthResponse login(@RequestBody AuthRequest request) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+                new UsernamePasswordAuthenticationToken(request.username(), request.password())
         );
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.username());
 
         String token = jwtUtil.generateToken(userDetails);
         return new AuthResponse(token);
