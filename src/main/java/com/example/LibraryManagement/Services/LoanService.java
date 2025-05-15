@@ -13,7 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class LoanService {
-    private static final int DEFAULT_LOAN_DURATION_DAYS = 14;
+    public static final int DEFAULT_LOAN_DURATION_DAYS = 14;
 
     private final LoanRepository loanRepository;
     private final BookService bookService;

@@ -21,6 +21,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.List;
+
+import static com.example.LibraryManagement.Services.LoanService.DEFAULT_LOAN_DURATION_DAYS;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -58,12 +60,14 @@ class LoanControllerIT {
 
         Book book = new Book(1L, "Book Title", "Author", false);
 
+        LocalDate dueDate = LocalDate.now().plusDays(DEFAULT_LOAN_DURATION_DAYS);
+
         Loan loan = new Loan();
         loan.setId(10L);
         loan.setBook(book);
         loan.setUser(user);
         loan.setLoanDate(LocalDate.now());
-        loan.setDueDate(LocalDate.now().plusDays(14)); //TODO magic number
+        loan.setDueDate(dueDate);
         loan.setReturned(false);
 
         Mockito.when(loanService.borrowBook(Mockito.eq(1L), Mockito.any(User.class))).thenReturn(loan);
@@ -74,7 +78,8 @@ class LoanControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(10)))
                 .andExpect(jsonPath("$.book.title", is("Book Title")))
-                .andExpect(jsonPath("$.user.username", is("testuser")));
+                .andExpect(jsonPath("$.user.username", is("testuser")))
+                .andExpect(jsonPath("$.dueDate", is(dueDate.toString() )));
     }
 
     @Test
