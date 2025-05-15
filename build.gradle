@@ -38,6 +38,10 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	//for working lombrok in tests
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
 	//in-memory databases for tests
 	runtimeOnly 'com.h2database:h2'
 

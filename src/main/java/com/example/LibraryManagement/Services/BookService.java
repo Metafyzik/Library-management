@@ -2,16 +2,15 @@ package com.example.LibraryManagement.Services;
 
 import com.example.LibraryManagement.Entities.Book;
 import com.example.LibraryManagement.Repositories.BookRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 
+@RequiredArgsConstructor
 public class BookService {
+
     private final BookRepository bookRepository;
-    public BookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }

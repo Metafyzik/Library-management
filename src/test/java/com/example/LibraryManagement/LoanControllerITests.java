@@ -5,6 +5,7 @@ import com.example.LibraryManagement.Entities.Loan;
 import com.example.LibraryManagement.Entities.User;
 import com.example.LibraryManagement.Services.LoanService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,20 +28,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 //TODO individual imports
 
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @Import(LoanControllerITests.MockedServiceConfig.class)
 @ActiveProfiles("test")
 class LoanControllerITests {
 
-    @Autowired
-    private MockMvc mockMvc;
 
-    @Autowired
-    private LoanService loanService;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final MockMvc mockMvc;
+    private final LoanService loanService;
+    private final ObjectMapper objectMapper;
 
     @TestConfiguration
     static class MockedServiceConfig {

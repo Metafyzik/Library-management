@@ -4,25 +4,20 @@ import com.example.LibraryManagement.Entities.Book;
 import com.example.LibraryManagement.Entities.Loan;
 import com.example.LibraryManagement.Entities.User;
 import com.example.LibraryManagement.Repositories.LoanRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.time.LocalDate;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class LoanService {
     private static final int DEFAULT_LOAN_DURATION_DAYS = 14;
+
     private final LoanRepository loanRepository;
     private final BookService bookService;
-
     private final UserService userService;
-
-    public LoanService(LoanRepository loanRepository, BookService bookService, UserService userService) {
-        this.loanRepository = loanRepository;
-        this.bookService = bookService;
-        this.userService = userService;
-    }
 
     @Transactional
     public Loan borrowBook(Long bookId, User user) { //TODO user object also contains password, do I need it too?

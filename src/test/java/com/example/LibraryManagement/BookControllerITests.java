@@ -4,6 +4,7 @@ package com.example.LibraryManagement;
 import com.example.LibraryManagement.Entities.Book;
 import com.example.LibraryManagement.Services.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +29,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @Import(BookControllerITests.MockedServiceConfig.class)
 @ActiveProfiles("test")
 class BookControllerITests {
 
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private BookService bookService;
-    @Autowired
-    private ObjectMapper objectMapper;
-
+    private final MockMvc mockMvc;
+    private final BookService bookService;
+    private final ObjectMapper objectMapper;
 
     @TestConfiguration
     static class MockedServiceConfig {
