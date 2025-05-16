@@ -2,7 +2,10 @@ package com.example.LibraryManagement.Entities;
 
 import com.example.LibraryManagement.Services.Role;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 

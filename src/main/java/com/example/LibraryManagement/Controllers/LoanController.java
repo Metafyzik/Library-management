@@ -1,18 +1,17 @@
 package com.example.LibraryManagement.Controllers;
 
-import com.example.LibraryManagement.Services.LoanService;
 import com.example.LibraryManagement.Entities.Loan;
 import com.example.LibraryManagement.Entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.LibraryManagement.Services.LoanService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/loans")
 public class LoanController {
-    @Autowired
-    private LoanService loanService;
+    private final LoanService loanService;
 
     @PostMapping("/{bookId}/borrow")
     public Loan borrowBook(@PathVariable Long bookId, @RequestBody User user) {

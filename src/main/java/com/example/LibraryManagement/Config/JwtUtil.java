@@ -3,20 +3,20 @@ package com.example.LibraryManagement.Config;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-@Component
-@EnableWebSecurity
 public class JwtUtil {
-    @Value("${jwtKey}")
-    private String SECRET_KEY;
+    private final String SECRET_KEY;
+    private final int TOKEN_DURATION = 1000 * 60 * 60; // 1 hour validity
+
+    public JwtUtil(String secretKey) {
+        this.SECRET_KEY = secretKey;
+    }
     private SecretKey getSignKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
     }
@@ -27,7 +27,7 @@ public class JwtUtil {
                 .claims()
                 .add(claims)
                 .subject(userDetails.getUsername())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hour validity
+                .expiration(new Date(System.currentTimeMillis() + TOKEN_DURATION))
                 .and()
                 .signWith(getSignKey())
                 .compact();
