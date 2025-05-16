@@ -45,14 +45,21 @@ public class LoanService {
     }
 
     @Transactional
-    public void returnBook(Long loanId) {
+    public Loan returnBook(Long loanId) {
         Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "Loan with ID " + loanId + " not found"
         ));
+
+        if (loan.isReturned()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Loan with ID " + loanId + " has already been returned"
+            );
+        }
+
         loan.setReturned(true);
         loan.getBook().setAvailable(true);
         bookService.saveBook(loan.getBook());
-        loanRepository.save(loan);
+        return loanRepository.save(loan);
     }
 
     public List<Loan> getLoansByUser(Long userId) {

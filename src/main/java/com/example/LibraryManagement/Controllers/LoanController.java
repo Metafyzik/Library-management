@@ -4,6 +4,7 @@ import com.example.LibraryManagement.Entities.Loan;
 import com.example.LibraryManagement.Entities.User;
 import com.example.LibraryManagement.Services.LoanService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -19,8 +20,9 @@ public class LoanController {
     }
 
     @PutMapping("/{loanId}/return")
-    public void returnBook(@PathVariable("loanId") Long loanId) {
-        loanService.returnBook(loanId);
+    public ResponseEntity<Loan> returnBook(@PathVariable("loanId") Long loanId) {
+        Loan updatedLoan = loanService.returnBook(loanId);
+        return ResponseEntity.ok(updatedLoan);
     }
 
     @GetMapping("/user/{userId}")
