@@ -14,12 +14,12 @@ public class LoanController {
     private final LoanService loanService;
 
     @PostMapping("/{bookId}/borrow")
-    public Loan borrowBook(@PathVariable Long bookId, @RequestBody User user) {
+    public Loan borrowBook(@PathVariable("bookId") Long bookId, @RequestBody User user) {
         return loanService.borrowBook(bookId, user);
     }
 
     @PutMapping("/{loanId}/return")
-    public void returnBook(@PathVariable Long loanId) {
+    public void returnBook(@PathVariable("loanId") Long loanId) {
         loanService.returnBook(loanId);
     }
 
