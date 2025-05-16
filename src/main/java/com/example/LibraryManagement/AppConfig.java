@@ -14,8 +14,10 @@ import com.example.LibraryManagement.Services.CustomUserDetailsService;
 import com.example.LibraryManagement.Services.LoanService;
 import com.example.LibraryManagement.Services.UserService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -27,9 +29,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
+
+@SpringBootConfiguration
+@EnableAutoConfiguration
 @EnableJpaRepositories(basePackages = "com.example.LibraryManagement.Repositories")
 public class AppConfig {
+
+    public static void main(String[] args) {
+        SpringApplication.run(AppConfig.class, args);
+    }
 
     // ===== Services =====
     @Bean
@@ -120,4 +128,3 @@ public class AppConfig {
     }
 
 }
-
