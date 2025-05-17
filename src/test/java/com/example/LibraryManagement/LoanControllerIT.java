@@ -70,16 +70,15 @@ class LoanControllerIT {
         loan.setDueDate(dueDate);
         loan.setReturned(false);
 
-        Mockito.when(loanService.borrowBook(Mockito.eq(1L), Mockito.any(User.class))).thenReturn(loan);
+        Mockito.when(loanService.borrowBook(1L, "testuser")).thenReturn(loan);
 
-        mockMvc.perform(post("/loans/1/borrow")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(user)))
+        mockMvc.perform(post("/loans/1/testuser/borrow")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(10)))
                 .andExpect(jsonPath("$.book.title", is("Book Title")))
                 .andExpect(jsonPath("$.user.username", is("testuser")))
-                .andExpect(jsonPath("$.dueDate", is(dueDate.toString() )));
+                .andExpect(jsonPath("$.dueDate", is(dueDate.toString())));
     }
 
     @Test

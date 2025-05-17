@@ -6,6 +6,8 @@ import com.example.LibraryManagement.Entities.User;
 import com.example.LibraryManagement.Repositories.LoanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
@@ -20,7 +22,7 @@ public class LoanService {
     private final UserService userService;
 
     @Transactional
-    public Loan borrowBook(Long bookId, User user) { //TODO user object also contains password, do I need it too?
+    public Loan borrowBook(Long bookId, String userName) {
         Book book = bookService.getBookById(bookId);
 
         if (!book.isAvailable()) {
@@ -29,14 +31,14 @@ public class LoanService {
             );
         }
 
-        User borroweringUser = userService.findByUsername(user.getUsername());
+        User borrowingUser = userService.findByUsername(userName);
 
         book.setAvailable(false);
         bookService.saveBook(book);
 
         Loan loan = new Loan();
         loan.setBook(book);
-        loan.setUser(borroweringUser);
+        loan.setUser(borrowingUser);
         loan.setLoanDate(LocalDate.now());
         loan.setDueDate(LocalDate.now().plusDays(DEFAULT_LOAN_DURATION_DAYS));
         loan.setReturned(false);

@@ -14,9 +14,9 @@ import java.util.List;
 public class LoanController {
     private final LoanService loanService;
 
-    @PostMapping("/{bookId}/borrow")
-    public Loan borrowBook(@PathVariable("bookId") Long bookId, @RequestBody User user) {
-        return loanService.borrowBook(bookId, user);
+    @PostMapping("/{bookId}/{username}/borrow")
+    public Loan borrowBook(@PathVariable("bookId") Long bookId, @PathVariable("username") String userName) {
+        return loanService.borrowBook(bookId, userName);
     }
 
     @PutMapping("/{loanId}/return")
