@@ -15,6 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Table(name = "books")
 public class Book {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,4 +27,6 @@ public class Book {
     private String author;
 
     private boolean isAvailable = true;
+
+    public Book (String title, String author) {this.title = title; this.author = author;}
 }

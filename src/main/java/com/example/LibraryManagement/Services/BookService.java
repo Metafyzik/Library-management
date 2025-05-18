@@ -1,7 +1,9 @@
 package com.example.LibraryManagement.Services;
 
+import com.example.LibraryManagement.DTO.BookCreation;
 import com.example.LibraryManagement.Entities.Book;
 import com.example.LibraryManagement.Repositories.BookRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,11 +25,22 @@ public class BookService {
                 ));
     }
 
+    public Book addBook(BookCreation bookCreation) {
+        Book createdBook = new Book(bookCreation.title(),bookCreation.author());
+
+        return bookRepository.save(createdBook);
+    }
+
     public Book saveBook(Book book) {
         return bookRepository.save(book);
     }
 
     public void deleteBook(Long id) {
+        if (!bookRepository.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Book with ID " + id + " not found"
+            );
+        }
         bookRepository.deleteById(id);
     }
 }

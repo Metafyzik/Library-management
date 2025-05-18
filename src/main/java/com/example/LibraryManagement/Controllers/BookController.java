@@ -1,8 +1,11 @@
 package com.example.LibraryManagement.Controllers;
 
+import com.example.LibraryManagement.DTO.BookCreation;
 import com.example.LibraryManagement.Services.BookService;
 import com.example.LibraryManagement.Entities.Book;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RequiredArgsConstructor
@@ -21,13 +24,13 @@ public class BookController {
     public Book getBookById(@PathVariable("id") Long id) {
         return bookService.getBookById(id);
     }
+
     @PostMapping
-    public Book addBook(@RequestBody Book book) {
-        return bookService.saveBook(book);
-    }
+    public Book addBook(@Valid @RequestBody BookCreation book) {return bookService.addBook(book);}
 
     @DeleteMapping("/{id}")
-    public void deleteBook(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteBook(@PathVariable("id") Long id) {
         bookService.deleteBook(id);
+        return ResponseEntity.noContent().build(); // 204 No Content
     }
 }
