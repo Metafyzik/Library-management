@@ -160,4 +160,55 @@ class AuthControllerITSpec extends Specification {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath('$.password', is(PASSWORD_NOT_BLANK)))
     }
+
+    //Combine registration a logging check
+
+    def "register a new user and login and return JWT token"() {
+        given:
+
+        def username ="Jack"
+        def request = new AuthRequest(username, DECODED_PASSWORD)
+
+        when: "register a new user"
+        mockMvc.perform(post("/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(content().string("User registered successfully."))
+
+        then: "login a user"
+        def result = mockMvc.perform(post("/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+
+        and: "and receive a token"
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath('$.token').exists())
+    }
+
+    def "register a new user and login with password and receive an error"() {
+        given:
+        def username ="Jack"
+
+        def request = new AuthRequest(username, DECODED_PASSWORD)
+        def wrongRequest = new AuthRequest(username, "wrongPassword")
+
+        when: "successfully register user"
+        mockMvc.perform(post("/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(content().string("User registered successfully."))
+
+        then: "login a user"
+        def result = mockMvc.perform(post("/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(wrongRequest)))
+                .andReturn()
+
+        and: "and receive an error"
+        result.response.status == 403
+        result.response.errorMessage == "Access Denied"
+
+    }
 }
