@@ -6,13 +6,16 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.SecretKey;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 public class JwtUtil {
     private final String SECRET_KEY;
-    private final int TOKEN_DURATION = 1000 * 60 * 60; // 1 hour validity
+    private final Duration TOKEN_DURATION = Duration.ofHours(1);
+
 
     public JwtUtil(String secretKey) {
         this.SECRET_KEY = secretKey;
@@ -21,13 +24,15 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
     }
     public String generateToken(UserDetails userDetails) {
+        Instant expiry = Instant.now().plus(TOKEN_DURATION);
+
         Map<String, Object> claims = new HashMap<>();
 
         return Jwts.builder()
                 .claims()
                 .add(claims)
                 .subject(userDetails.getUsername())
-                .expiration(new Date(System.currentTimeMillis() + TOKEN_DURATION))
+                .expiration(Date.from(expiry))
                 .and()
                 .signWith(getSignKey())
                 .compact();
