@@ -3,6 +3,7 @@ package com.example.LibraryManagement.Config;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.SecretKey;
@@ -12,19 +13,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+@RequiredArgsConstructor
 public class JwtUtil {
-    private final String SECRET_KEY;
-    private final Duration TOKEN_DURATION = Duration.ofHours(1);
+    private final String secretKey;
+    private final Duration tokenDuration;
 
-
-    public JwtUtil(String secretKey) {
-        this.SECRET_KEY = secretKey;
+    public JwtUtil(JwtProperties jwtProperties) {
+        this.secretKey = jwtProperties.getKey();
+        this.tokenDuration = jwtProperties.getDuration();
     }
+
     private SecretKey getSignKey() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
     public String generateToken(UserDetails userDetails) {
-        Instant expiry = Instant.now().plus(TOKEN_DURATION);
+        Instant expiry = Instant.now().plus(tokenDuration);
 
         Map<String, Object> claims = new HashMap<>();
 

@@ -2,6 +2,7 @@ package com.example.LibraryManagement;
 
 
 import com.example.LibraryManagement.Config.JwtAuthenticationFilter;
+import com.example.LibraryManagement.Config.JwtProperties;
 import com.example.LibraryManagement.Config.JwtUtil;
 import com.example.LibraryManagement.Controllers.AuthController;
 import com.example.LibraryManagement.Controllers.BookController;
@@ -14,12 +15,11 @@ import com.example.LibraryManagement.Services.BookService;
 import com.example.LibraryManagement.Services.CustomUserDetailsService;
 import com.example.LibraryManagement.Services.LoanService;
 import com.example.LibraryManagement.Services.UserService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -30,10 +30,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @SpringBootConfiguration
 @EnableAutoConfiguration
+@EnableConfigurationProperties(JwtProperties.class)
 @EnableJpaRepositories(basePackages = "com.example.LibraryManagement.Repositories")
 public class AppConfig {
 
@@ -90,8 +90,8 @@ public class AppConfig {
 
     // ===== JWT =====
     @Bean
-    public JwtUtil jwtUtil(@Value("${jwtKey}") String jwtKey) {
-        return new JwtUtil(jwtKey);
+    public JwtUtil jwtUtil(JwtProperties jwtProperties) {
+        return new JwtUtil(jwtProperties);
     }
 
     // ===== Security  =====
