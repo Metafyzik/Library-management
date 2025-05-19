@@ -6,6 +6,7 @@ import com.example.LibraryManagement.Config.JwtUtil;
 import com.example.LibraryManagement.Controllers.AuthController;
 import com.example.LibraryManagement.Controllers.BookController;
 import com.example.LibraryManagement.Controllers.LoanController;
+import com.example.LibraryManagement.Exception.ValidationExceptionHandler;
 import com.example.LibraryManagement.Repositories.BookRepository;
 import com.example.LibraryManagement.Repositories.LoanRepository;
 import com.example.LibraryManagement.Repositories.UserRepository;
@@ -18,6 +19,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -28,7 +30,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @SpringBootConfiguration
 @EnableAutoConfiguration
@@ -102,7 +104,6 @@ public class AppConfig {
         return provider;
     }
 
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -125,6 +126,12 @@ public class AppConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    // ===== Custom Exceptions  =====
+    @Bean
+    public ValidationExceptionHandler customValidationHandler() {
+        return new ValidationExceptionHandler();
     }
 
 }

@@ -16,8 +16,12 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
 
+import static org.hamcrest.Matchers.is
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+
+import static com.example.LibraryManagement.Common.ValidationMessages.PASSWORD_NOT_BLANK;
+import static com.example.LibraryManagement.Common.ValidationMessages.USERNAME_NOT_BLANK;
 
 
 @ContextConfiguration
@@ -83,7 +87,7 @@ class AuthControllerITSpec extends Specification {
     }
 
 
-    def "returns bad request when username is missing from the registration request"() {
+    def "returns bad request and json when username is missing from the registration request"() {
         given:
 
         def authJson = JsonOutput.toJson([password: "pass1313215",])
@@ -94,12 +98,13 @@ class AuthControllerITSpec extends Specification {
                 .content(authJson)
         )
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath('$.username', is(USERNAME_NOT_BLANK)))
     }
 
-    def "returns bad request when password is missing from the registration request"() {
+    def "returns bad request and json when password is missing from the registration request"() {
         given:
 
-        def authJson = JsonOutput.toJson([author: "George Orwell"])
+        def authJson = JsonOutput.toJson([username: "George Orwell"])
 
         expect:
         mockMvc.perform(post("/auth/register")
@@ -107,6 +112,7 @@ class AuthControllerITSpec extends Specification {
                 .content(authJson)
         )
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath('$.password', is(PASSWORD_NOT_BLANK)))
     }
 
     //POST /auth/login; METHOD: login
@@ -127,7 +133,7 @@ class AuthControllerITSpec extends Specification {
                 .andExpect(jsonPath('$.token').exists())
     }
 
-    def "returns bad request when username is missing from the login request"() {
+    def "returns bad request and json when username is missing from the login request"() {
         given:
 
         def authJson = JsonOutput.toJson([password: "pass1313215",])
@@ -138,12 +144,13 @@ class AuthControllerITSpec extends Specification {
                 .content(authJson)
         )
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath('$.username', is(USERNAME_NOT_BLANK)))
     }
 
-    def "returns bad request when password is missing from the login request"() {
+    def "returns bad request and json when password is missing from the login request"() {
         given:
 
-        def authJson = JsonOutput.toJson([author: "George Orwell"])
+        def authJson = JsonOutput.toJson([username: "George Orwell"])
 
         expect:
         mockMvc.perform(post("/auth/login")
@@ -151,6 +158,6 @@ class AuthControllerITSpec extends Specification {
                 .content(authJson)
         )
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath('$.password', is(PASSWORD_NOT_BLANK)))
     }
-
 }

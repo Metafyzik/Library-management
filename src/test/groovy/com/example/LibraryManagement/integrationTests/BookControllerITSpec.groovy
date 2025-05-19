@@ -22,6 +22,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
+import static com.example.LibraryManagement.Common.ValidationMessages.AUTHOR_NOT_BLANK;
+import static com.example.LibraryManagement.Common.ValidationMessages.TITLE_NOT_BLANK;
+
 @ContextConfiguration
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -77,7 +80,7 @@ class BookControllerITSpec extends Specification {
     }
 
     @WithMockUser(username = "testuser", roles = ["MEMBER"])
-    def "returns error when author is missing"() {
+    def "returns bad request and json when author is missing from Book creation DTO"() {
         given:
 
         def bookJson = JsonOutput.toJson([title: "1984"])
@@ -88,10 +91,11 @@ class BookControllerITSpec extends Specification {
                 .content(bookJson)
         )
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath('$.author', is(AUTHOR_NOT_BLANK)))
     }
 
     @WithMockUser(username = "testuser", roles = ["MEMBER"])
-    def "returns error when title is missing"() {
+    def "returns error and json when title is missing"() {
         given:
 
         def bookJson = JsonOutput.toJson([author: "Anthony Burgess"])
@@ -102,6 +106,7 @@ class BookControllerITSpec extends Specification {
                 .content(bookJson)
         )
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath('$.title', is(TITLE_NOT_BLANK)))
     }
 
     //GET /books; METHOD: getAllBooks
