@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.SecretKey;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,20 +15,14 @@ import java.util.function.Function;
 
 @RequiredArgsConstructor
 public class JwtUtil {
-    private final String secretKey;
-    private final Duration tokenDuration;
-
-    public JwtUtil(JwtProperties jwtProperties) {
-        this.secretKey = jwtProperties.getKey();
-        this.tokenDuration = jwtProperties.getDuration();
-    }
+    private final JwtProperties jwtProperties;
 
     private SecretKey getSignKey() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getKey()));
     }
-    public String generateToken(UserDetails userDetails) {
-        Instant expiry = Instant.now().plus(tokenDuration);
 
+    public String generateToken(UserDetails userDetails) {
+        Instant expiry = Instant.now().plus(jwtProperties.getDuration());
         Map<String, Object> claims = new HashMap<>();
 
         return Jwts.builder()
