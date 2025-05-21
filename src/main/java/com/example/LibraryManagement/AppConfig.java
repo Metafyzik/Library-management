@@ -4,9 +4,6 @@ package com.example.LibraryManagement;
 import com.example.LibraryManagement.Config.JwtAuthenticationFilter;
 import com.example.LibraryManagement.Config.JwtProperties;
 import com.example.LibraryManagement.Config.JwtUtil;
-import com.example.LibraryManagement.Controllers.AuthController;
-import com.example.LibraryManagement.Controllers.BookController;
-import com.example.LibraryManagement.Controllers.LoanController;
 import com.example.LibraryManagement.Exception.ValidationExceptionHandler;
 import com.example.LibraryManagement.Repositories.BookRepository;
 import com.example.LibraryManagement.Repositories.LoanRepository;
@@ -16,8 +13,7 @@ import com.example.LibraryManagement.Services.CustomUserDetailsService;
 import com.example.LibraryManagement.Services.LoanService;
 import com.example.LibraryManagement.Services.UserService;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -31,8 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@SpringBootConfiguration
-@EnableAutoConfiguration
+@SpringBootApplication
 @EnableConfigurationProperties(JwtProperties.class)
 @EnableJpaRepositories(basePackages = "com.example.LibraryManagement.Repositories")
 public class AppConfig {
@@ -64,22 +59,6 @@ public class AppConfig {
     @Bean
     public LoanService loanService(LoanRepository loanRepository,BookService bookService, UserService userService) {
         return new LoanService(loanRepository, bookService, userService);
-    }
-
-    // ===== Controllers =====
-    @Bean
-    public AuthController authController(UserService userService) {
-        return new AuthController(userService);
-    }
-
-    @Bean
-    public BookController bookController(BookService bookService) {
-        return new BookController(bookService);
-    }
-
-    @Bean
-    public LoanController loanController(LoanService loanService) {
-        return new LoanController(loanService);
     }
 
     @Bean
