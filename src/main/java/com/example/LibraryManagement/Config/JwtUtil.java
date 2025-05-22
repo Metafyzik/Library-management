@@ -3,31 +3,33 @@ package com.example.LibraryManagement.Config;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+
 import javax.crypto.SecretKey;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-@Component
-@EnableWebSecurity
+
+@RequiredArgsConstructor
 public class JwtUtil {
-    @Value("${jwtKey}")
-    private String SECRET_KEY;
+    private final JwtProperties jwtProperties;
+
     private SecretKey getSignKey() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getKey()));
     }
+
     public String generateToken(UserDetails userDetails) {
+        Instant expiry = Instant.now().plus(jwtProperties.getDuration());
         Map<String, Object> claims = new HashMap<>();
 
         return Jwts.builder()
                 .claims()
                 .add(claims)
                 .subject(userDetails.getUsername())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hour validity
+                .expiration(Date.from(expiry))
                 .and()
                 .signWith(getSignKey())
                 .compact();

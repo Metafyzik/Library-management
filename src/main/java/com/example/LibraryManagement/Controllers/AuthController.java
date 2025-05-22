@@ -1,34 +1,27 @@
 package com.example.LibraryManagement.Controllers;
 
-import com.example.LibraryManagement.Repositories.UserRepository;
-import com.example.LibraryManagement.Services.Role;
 import com.example.LibraryManagement.DTO.AuthRequest;
 import com.example.LibraryManagement.DTO.AuthResponse;
-import com.example.LibraryManagement.Services.CustomUserDetailsService;
-import com.example.LibraryManagement.Config.JwtUtil;
-import com.example.LibraryManagement.Entities.User;
 import com.example.LibraryManagement.Services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.*;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
-
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
     @PostMapping("/register")
-    public String register(@RequestBody AuthRequest request) {
+    public ResponseEntity<String> register(@Valid @RequestBody AuthRequest request) {
         return userService.register(request);
     }
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthRequest request) {
+    public AuthResponse login(@Valid @RequestBody AuthRequest request) {
         return userService.login(request);
     }
 }

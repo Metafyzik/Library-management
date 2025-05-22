@@ -1,8 +1,12 @@
 package com.example.LibraryManagement.Entities;
 
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -11,6 +15,7 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "books")
 public class Book {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,4 +27,6 @@ public class Book {
     private String author;
 
     private boolean isAvailable = true;
+
+    public Book (String title, String author) {this.title = title; this.author = author;}
 }
